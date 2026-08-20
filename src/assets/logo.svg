@@ -1,0 +1,79 @@
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle logoDescription">
+  <title id="logoTitle">ExamNova AI</title>
+  <desc id="logoDescription">ExamNova AI logo with a graduation cap, AI circuit elements, a digital checklist, and the tagline Intelligent Examination Platform.</desc>
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer circle glow -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#06B6D4" stroke-width="1" opacity="0.3"/>
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#06B6D4" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Graduation Cap -->
+  <g filter="url(#glow)">
+    <!-- Cap board -->
+    <rect x="65" y="50" width="70" height="8" rx="2" fill="url(#logoGradient)"/>
+    <!-- Cap tassel -->
+    <circle cx="130" cy="68" r="4" fill="#06B6D4"/>
+    <line x1="130" y1="72" x2="135" y2="95" stroke="#06B6D4" stroke-width="2"/>
+    <!-- Cap base -->
+    <path d="M 70 58 Q 100 45 130 58 L 125 50 Q 100 40 75 50 Z" fill="url(#logoGradient)" opacity="0.8"/>
+  </g>
+
+  <!-- AI Circuit Elements -->
+  <g stroke="#2563EB" stroke-width="1.5" fill="none" opacity="0.7">
+    <!-- Left circuit -->
+    <circle cx="55" cy="90" r="5" fill="#2563EB" opacity="0.9"/>
+    <path d="M 55 95 L 55 110 Q 55 115 60 115 L 75 115" stroke="#2563EB" stroke-width="1.5"/>
+    <circle cx="75" cy="115" r="3" fill="#2563EB" opacity="0.8"/>
+    
+    <!-- Right circuit -->
+    <circle cx="145" cy="90" r="5" fill="#7C3AED" opacity="0.9"/>
+    <path d="M 145 95 L 145 110 Q 145 115 140 115 L 125 115" stroke="#7C3AED" stroke-width="1.5"/>
+    <circle cx="125" cy="115" r="3" fill="#7C3AED" opacity="0.8"/>
+    
+    <!-- Center connection -->
+    <path d="M 60 90 Q 100 85 140 90" stroke="#06B6D4" stroke-width="1.5" opacity="0.6"/>
+  </g>
+
+  <!-- Digital Exam/Checklist Icon -->
+  <g fill="none" stroke="url(#logoGradient)" stroke-width="2">
+    <!-- Document -->
+    <rect x="70" y="130" width="60" height="50" rx="3" stroke="url(#logoGradient)" stroke-width="2"/>
+    
+    <!-- Checkmarks -->
+    <g stroke="#06B6D4" stroke-width="2" stroke-linecap="round">
+      <path d="M 78 142 L 82 146 L 88 140"/>
+      <path d="M 78 157 L 82 161 L 88 155"/>
+      <path d="M 78 172 L 82 176 L 88 170"/>
+    </g>
+    
+    <!-- Checkmark lines -->
+    <line x1="95" y1="143" x2="115" y2="143" stroke="#2563EB" stroke-width="1.5"/>
+    <line x1="95" y1="158" x2="115" y2="158" stroke="#2563EB" stroke-width="1.5"/>
+    <line x1="95" y1="173" x2="115" y2="173" stroke="#2563EB" stroke-width="1.5"/>
+  </g>
+
+  <!-- Center accent dots -->
+  <circle cx="100" cy="100" r="2" fill="#06B6D4" opacity="0.8"/>
+  <circle cx="100" cy="100" r="4" fill="none" stroke="#06B6D4" stroke-width="1" opacity="0.4"/>
+
+  <!-- Editable wordmark and tagline -->
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="214" y="91" fill="#F8FAFC" font-size="24" font-weight="800" letter-spacing="-0.8">ExamNova</text>
+    <text x="214" y="114" fill="#06B6D4" font-size="14" font-weight="700" letter-spacing="1.4">AI</text>
+    <rect x="214" y="123" width="82" height="1" rx="0.5" fill="url(#logoGradient)" opacity="0.9"/>
+    <text x="214" y="141" fill="#CBD5E1" font-size="7.5" font-weight="600" letter-spacing="0.55">INTELLIGENT EXAMINATION</text>
+    <text x="214" y="153" fill="#CBD5E1" font-size="7.5" font-weight="600" letter-spacing="0.55">PLATFORM</text>
+  </g>
+</svg>
