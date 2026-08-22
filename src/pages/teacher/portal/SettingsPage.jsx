@@ -1,13 +1,15 @@
 import { PageHeader, ReusableButton, ReusableCard, ReusableForm, FormField } from '../../../components/ui/PortalUI';
+import { useTheme } from '../../../hooks/useTheme.jsx';
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   return (
     <div className="space-y-6">
       <PageHeader title="Settings" subtitle="Instructor preferences and security controls" />
       <div className="grid gap-6 lg:grid-cols-2">
         <ReusableCard title="Theme" subtitle="Appearance preferences">
           <div className="mt-4 space-y-3">
-            <label className="flex items-center justify-between rounded-2xl border border-slate-200 p-3 text-sm text-slate-700"><span>Enable dark mode</span><input type="checkbox" /></label>
+            <label className="flex items-center justify-between rounded-2xl border border-slate-200 p-3 text-sm text-slate-700"><span>Enable dark mode</span><input type="checkbox" checked={theme === 'dark'} onChange={(event) => setTheme(event.target.checked ? 'dark' : 'light')} /></label>
             <label className="flex items-center justify-between rounded-2xl border border-slate-200 p-3 text-sm text-slate-700"><span>Compact layout</span><input type="checkbox" /></label>
           </div>
         </ReusableCard>

@@ -1,27 +1,2 @@
-import { FaDownload, FaMagic } from 'react-icons/fa';
-import { PageHeader, ReusableButton, ReusableCard } from '../../../components/ui/PortalUI';
-
-export default function CertificateManagementPage() {
-  return (
-    <div className="space-y-6">
-      <PageHeader title="Certificate Management" subtitle="Create and publish certificates" action={<ReusableButton><FaMagic className="mr-2 inline" /> Generate</ReusableButton>} />
-      <div className="grid gap-6 lg:grid-cols-2">
-        <ReusableCard title="Generate Certificate" subtitle="Prepare award documents">
-          <div className="mt-4 space-y-3">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">Bulk generation for top-performing students</div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">Custom template for excellence and participation</div>
-          </div>
-        </ReusableCard>
-        <ReusableCard title="Preview and Publish" subtitle="Review before sending">
-          <div className="mt-4 rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-            <p className="text-sm text-slate-600">Certificate preview will appear here.</p>
-            <div className="mt-4 flex gap-3 justify-center">
-              <ReusableButton variant="secondary"><FaDownload className="mr-2 inline" /> Download</ReusableButton>
-              <ReusableButton>Publish</ReusableButton>
-            </div>
-          </div>
-        </ReusableCard>
-      </div>
-    </div>
-  );
-}
+import { useEffect,useState } from 'react'; import { PageHeader,ReusableCard,EmptyState } from '../../../components/ui/PortalUI'; import { api } from '../../../lib/api';
+export default function CertificateManagementPage(){const[items,setItems]=useState([]),[error,setError]=useState(''),[loading,setLoading]=useState(true);useEffect(()=>{api('/certificates/eligible').then(d=>setItems(d.certificates)).catch(()=>setError('Unable to load certificate eligibility. Please try again.')).finally(()=>setLoading(false))},[]);return <div className="space-y-6"><PageHeader title="Certificate Management" subtitle="Eligible students from finalized published results"/>{error&&<p className="text-rose-300">{error}</p>}<ReusableCard title="Eligible Students">{loading?'Loading certificates...':items.length?items.map(item=><div key={item.id} className="mb-3 rounded-xl border p-4 text-slate-200"><b>{item.student}</b><p>{item.exam} · {item.subject}</p><p>{item.marks}/{item.totalMarks} · {item.percentage}% · {item.department}</p><p className="text-sm text-slate-400">Certificate eligibility is based on the finalized published result.</p></div>):<EmptyState title="No eligible students found." message="Students appear after a finalized result is published."/>}</ReusableCard></div>}

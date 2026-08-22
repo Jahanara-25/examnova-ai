@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import logo from '../../assets/logo.svg';
+import ThemeToggle from './ThemeToggle';
 
 const links = [
   { to: '#features', label: 'Features' },
@@ -18,10 +19,6 @@ export default function Navbar() {
       <div className="container nav-shell">
         <Link to="/" className="brand-block">
           <img className="brand-logo" src={logo} alt="ExamNova AI" />
-          <span className="brand-copy">
-            <span className="brand-name">examnova.ai</span>
-            <span className="brand-tagline">(ai powered intelligent examination platform)</span>
-          </span>
         </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">
@@ -34,15 +31,14 @@ export default function Navbar() {
 
         {isAuthenticated ? (
           <div className="nav-actions">
+            <ThemeToggle />
             <span className="user-badge">{user?.name}</span>
             <button className="button button-secondary" onClick={logout}>
               Logout
             </button>
           </div>
         ) : (
-          <Link to="/auth/role-selection" className="button button-primary">
-            Login
-          </Link>
+          <div className="nav-actions"><ThemeToggle /><Link to="/auth/role-selection" className="button button-primary">Login</Link></div>
         )}
       </div>
     </header>

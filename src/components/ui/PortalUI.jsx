@@ -101,7 +101,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search...' }) {
   );
 }
 
-export function ReusableButton({ children, variant = 'primary', className = '', onClick, type = 'button' }) {
+export function ReusableButton({ children, variant = 'primary', className = '', onClick, type = 'button', disabled = false }) {
   const base = 'rounded-xl px-4 py-2.5 font-medium transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group';
   const variants = {
     primary: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl hover:shadow-blue-500/50 hover:-translate-y-1 active:translate-y-0',
@@ -110,7 +110,7 @@ export function ReusableButton({ children, variant = 'primary', className = '', 
     danger: 'bg-gradient-to-r from-rose-600 to-red-600 text-white shadow-lg hover:shadow-rose-500/50 hover:-translate-y-1',
   };
   return (
-    <button type={type} onClick={onClick} className={`${base} ${variants[variant]} ${className}`}>
+    <button type={type} onClick={onClick} disabled={disabled} className={`${base} ${disabled ? 'cursor-not-allowed opacity-50' : ''} ${variants[variant]} ${className}`}>
       <span className="relative z-10">{children}</span>
     </button>
   );
@@ -118,7 +118,7 @@ export function ReusableButton({ children, variant = 'primary', className = '', 
 
 export function ReusableTable({ columns, data }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-blue-500/20 shadow-lg">
+    <div className="overflow-x-auto rounded-2xl border border-blue-500/20 shadow-lg">
       <table className="min-w-full divide-y divide-blue-500/10 bg-gradient-to-b from-slate-900/40 to-slate-900/20 backdrop-blur-xl">
         <thead className="bg-slate-900/60 backdrop-blur-sm">
           <tr>

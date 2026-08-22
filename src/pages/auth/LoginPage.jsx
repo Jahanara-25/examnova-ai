@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import logo from '../../assets/logo.svg';
 
@@ -12,25 +12,27 @@ const roleLabels = {
 export default function LoginPage() {
   const { role } = useParams();
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const location = useLocation();
+  const { login, isAuthenticated, user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(`/${role}/dashboard`);
+      navigate(`/${user?.role || role}/dashboard`);
     }
-  }, [isAuthenticated, navigate, role]);
+  }, [isAuthenticated, navigate, role, user]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
 
-    const didLogin = login(role, email, password);
-    if (!didLogin) {
-      setError('Invalid credentials. Please use the role-based demo account shown below.');
-    }
+    setIsSubmitting(true);
+    const result = await login(email, password);
+    setIsSubmitting(false);
+    if (!result.ok) setError(result.message);
   };
 
   const roleLabel = roleLabels[role] || 'User';
@@ -41,6 +43,7 @@ export default function LoginPage() {
         <img className="auth-logo" src={logo} alt="ExamNova AI" />
         <p className="eyebrow">{roleLabel} login</p>
         <h1>Welcome back</h1>
+        {location.state?.message && <p className="mt-3 text-sm font-semibold text-emerald-400" role="status">{location.state.message}</p>}
         <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             Email
@@ -51,15 +54,11 @@ export default function LoginPage() {
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
           {error && <p className="error-message">{error}</p>}
-          <button className="button button-primary" type="submit">
-            Sign In
+          <button className="button button-primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-        <div className="demo-card">
-          <h3>Demo credentials</h3>
-          <p>Email: {role === 'student' ? 'student@examai.com' : role === 'teacher' ? 'teacher@examai.com' : 'admin@examai.com'}</p>
-          <p>Password: {role === 'student' ? 'Student@123' : role === 'teacher' ? 'Teacher@123' : 'Admin@123'}</p>
-        </div>
+        {role !== 'admin' && <p className="mt-5 text-center text-sm text-slate-400">Don&apos;t have an account? <Link to={`/register?role=${role}`} className="font-semibold text-cyan-400">Register</Link></p>}
       </div>
     </main>
   );

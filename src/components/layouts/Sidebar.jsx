@@ -38,12 +38,9 @@ export default function Sidebar({ role }) {
   const items = role === 'teacher' ? teacherItems : studentItems;
   return (
     <aside className="hidden w-72 shrink-0 flex-col rounded-[28px] border border-blue-400/20 bg-slate-950/80 p-5 text-slate-100 shadow-2xl shadow-blue-950/50 backdrop-blur-xl lg:flex">
-      <div className="mb-8 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600/30 to-purple-600/30 p-1"><img src={logo} alt="ExamNova AI" className="h-full w-full object-cover object-left" /></div>
-        <div>
-          <p className="text-sm font-semibold">ExamNova AI</p>
-          <p className="text-xs text-slate-400">{role === 'teacher' ? 'Instructor Suite' : 'Student Portal'}</p>
-        </div>
+      <div className="mb-8 rounded-2xl border border-white/10 bg-white/5 p-3">
+        <img src={logo} alt="ExamNova AI" className="sidebar-logo" />
+        <p className="mt-2 text-xs text-slate-400">{role === 'teacher' ? 'Instructor Suite' : 'Student Portal'}</p>
       </div>
       <nav className="flex flex-1 flex-col gap-1">
         {items.map((item) => {

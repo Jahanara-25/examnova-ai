@@ -25,7 +25,7 @@ export default function TeacherLayout({ children }) {
   const breadcrumbs = routeMap[location.pathname] || [{ label: 'Teacher' }, { label: 'Portal' }];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.18),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(124,58,237,0.14),_transparent_30%),#0F172A] p-4 lg:p-6">
+    <div className="portal-layout min-h-screen p-4 lg:p-6">
       <div className="mx-auto flex max-w-7xl gap-6">
         <Sidebar role="teacher" />
         <div className="flex-1 space-y-5">

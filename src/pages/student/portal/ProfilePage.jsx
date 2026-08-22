@@ -1,49 +1,12 @@
-import { FaCamera, FaEdit, FaGraduationCap, FaUser } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { FaEdit, FaGraduationCap } from 'react-icons/fa';
 import { PageHeader, ReusableButton, ReusableCard, ReusableForm, FormField } from '../../../components/ui/PortalUI';
-import { studentProfile } from '../../../data/mockData';
-
+import { useAuth } from '../../../hooks/useAuth';
+import { api } from '../../../lib/api';
 export default function ProfilePage() {
-  return (
-    <div className="space-y-6">
-      <PageHeader title="Profile" subtitle="Personal and academic details" action={<ReusableButton variant="secondary"><FaEdit className="mr-2 inline" /> Edit Profile</ReusableButton>} />
-      <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-        <ReusableCard title="Student Overview" subtitle="Identity and contact section">
-          <div className="mt-4 flex flex-col items-center rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-900 text-2xl font-semibold text-white">{studentProfile.avatar}</div>
-            <h3 className="mt-4 text-xl font-semibold text-slate-900">{studentProfile.name}</h3>
-            <p className="text-sm text-slate-600">{studentProfile.role}</p>
-            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600">
-              <FaCamera /> Upload photo
-            </div>
-          </div>
-        </ReusableCard>
-        <div className="space-y-6">
-          <ReusableCard title="Personal Details" subtitle="Current account information">
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <div><p className="text-sm text-slate-500">Email</p><p className="font-semibold text-slate-900">{studentProfile.email}</p></div>
-              <div><p className="text-sm text-slate-500">Roll Number</p><p className="font-semibold text-slate-900">{studentProfile.rollNumber}</p></div>
-              <div><p className="text-sm text-slate-500">Branch</p><p className="font-semibold text-slate-900">{studentProfile.branch}</p></div>
-              <div><p className="text-sm text-slate-500">Semester</p><p className="font-semibold text-slate-900">{studentProfile.semester}</p></div>
-            </div>
-          </ReusableCard>
-          <ReusableCard title="Academic Details" subtitle="Current learning standing">
-            <div className="mt-4 flex items-center gap-4 rounded-2xl bg-slate-50 p-4">
-              <FaGraduationCap className="text-2xl text-slate-900" />
-              <div>
-                <p className="font-semibold text-slate-900">CGPA: {studentProfile.cgpa}</p>
-                <p className="text-sm text-slate-600">Consistently strong performance across the semester.</p>
-              </div>
-            </div>
-          </ReusableCard>
-        </div>
-      </div>
-      <ReusableForm title="Edit Profile">
-        <div className="grid gap-4 md:grid-cols-2">
-          <FormField label="Full Name"><input className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none" defaultValue={studentProfile.name} /></FormField>
-          <FormField label="Email"><input className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none" defaultValue={studentProfile.email} /></FormField>
-        </div>
-        <ReusableButton>Save Changes</ReusableButton>
-      </ReusableForm>
-    </div>
-  );
+  const { user, refreshProfile } = useAuth(); const [form, setForm] = useState({ name: '', rollNumber: '', department: '' }); const [message, setMessage] = useState('');
+  useEffect(() => setForm({ name: user?.name || '', rollNumber: user?.rollNumber || '', department: user?.department || '' }), [user]);
+  const save = async (event) => { event.preventDefault(); try { await api('/auth/me', { method: 'PATCH', body: JSON.stringify(form) }); await refreshProfile(); setMessage('Profile updated.'); } catch (e) { setMessage(e.message); } };
+  const initials = user?.name ? user.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() : 'S';
+  return <div className="space-y-6"><PageHeader title="Profile" subtitle="Personal and academic details" action={<ReusableButton variant="secondary" onClick={() => document.getElementById('profile-form')?.scrollIntoView({ behavior: 'smooth' })}><FaEdit /> Edit Profile</ReusableButton>} /><div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]"><ReusableCard title="Student Overview"><div className="mt-4 flex flex-col items-center rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center"><div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-900 text-2xl font-semibold text-white">{initials}</div><h3 className="mt-4 text-xl font-semibold text-slate-900">{user?.name || 'Not provided'}</h3><p className="text-sm text-slate-600">Student</p></div></ReusableCard><ReusableCard title="Current Account Details"><div className="grid gap-4 md:grid-cols-2">{[['Email', user?.email], ['Roll Number', user?.rollNumber], ['Department', user?.department]].map(([label, value]) => <div key={label}><p className="text-sm text-slate-500">{label}</p><p className="font-semibold text-slate-900">{value || 'Not provided'}</p></div>)}<div className="flex gap-3"><FaGraduationCap className="text-2xl text-slate-900" /><p className="text-sm text-slate-600">Your academic performance is available in Analytics after results are published.</p></div></div></ReusableCard></div><ReusableForm title="Edit Profile" onSubmit={save}><div id="profile-form" className="grid gap-4 md:grid-cols-2"><FormField label="Full Name"><input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900" /></FormField><FormField label="Roll Number"><input required value={form.rollNumber} onChange={(e) => setForm({ ...form, rollNumber: e.target.value })} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900" /></FormField><FormField label="Department"><input required value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900" /></FormField></div>{message && <p className="text-sm text-cyan-300">{message}</p>}<ReusableButton type="submit">Save Changes</ReusableButton></ReusableForm></div>;
 }

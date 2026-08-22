@@ -1,22 +1,8 @@
+import { useState } from 'react';
 import { FaRobot, FaPaperPlane } from 'react-icons/fa';
 import { PageHeader, ReusableCard, ReusableButton } from '../../../components/ui/PortalUI';
-
 export default function AiChatbotPage() {
-  return (
-    <div className="space-y-6">
-      <PageHeader title="AI Chatbot" subtitle="Ask for summaries, practice recommendations, or revision plans" />
-      <ReusableCard title="Assistant" subtitle="Mock-ready conversational experience">
-        <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
-          <div className="flex items-start gap-3 rounded-2xl bg-white p-3 text-sm text-slate-700">
-            <FaRobot className="mt-1 text-slate-900" />
-            <p>I can help summarize your last lecture, create a revision plan, or explain tricky concepts by subject.</p>
-          </div>
-          <div className="mt-3 flex gap-3">
-            <input className="flex-1 rounded-2xl border border-slate-200 bg-white px-3 py-2 outline-none" placeholder="Ask about your study plan" />
-            <ReusableButton><FaPaperPlane className="mr-2 inline" /> Send</ReusableButton>
-          </div>
-        </div>
-      </ReusableCard>
-    </div>
-  );
+  const [question, setQuestion] = useState(''); const [messages, setMessages] = useState([{ role: 'assistant', text: 'I can help you plan revision. Ask about preparing for an exam or using your results to focus your study.' }]);
+  const send = (event) => { event.preventDefault(); const text = question.trim(); if (!text) return; setMessages((items) => [...items, { role: 'user', text }, { role: 'assistant', text: 'For personalised scores, open Performance Analytics. For an upcoming assessment, check Exam Schedule and review the instructions on your hall ticket.' }]); setQuestion(''); };
+  return <div className="space-y-6"><PageHeader title="Study Assistant" subtitle="Guidance for using your live exam and result data" /><ReusableCard title="Assistant"><div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4">{messages.map((message, index) => <div key={index} className={`rounded-2xl p-3 text-sm ${message.role === 'assistant' ? 'bg-white text-slate-700' : 'bg-cyan-100 text-slate-800'}`}>{message.role === 'assistant' && <FaRobot className="mr-2 inline" />}{message.text}</div>)}<form onSubmit={send} className="flex gap-3"><input value={question} onChange={(e) => setQuestion(e.target.value)} className="flex-1 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-slate-900 outline-none" placeholder="Ask about your study plan" /><ReusableButton type="submit"><FaPaperPlane /> Send</ReusableButton></form></div></ReusableCard></div>;
 }

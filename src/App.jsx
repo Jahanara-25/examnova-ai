@@ -5,10 +5,12 @@ import Footer from './components/common/Footer';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { ProtectedRoute } from './hooks/useProtectedRoute';
 import { ToastProvider } from './components/ui/PortalUI';
+import BackButton from './components/common/BackButton';
 
 const LandingPage = lazy(() => import('./pages/landing/LandingPage'));
 const RoleSelectionPage = lazy(() => import('./pages/auth/RoleSelectionPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const StudentDashboard = lazy(() => import('./pages/student/StudentDashboard'));
 const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -37,7 +39,7 @@ const TeacherSettingsPage = lazy(() => import('./pages/teacher/portal/SettingsPa
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function LoadingFallback() {
-  return <div className="flex min-h-screen items-center justify-center bg-slate-950 text-sm font-medium text-cyan-300">Loading experience...</div>;
+  return <div className="app-loading flex min-h-screen items-center justify-center text-sm font-medium text-cyan-500">Loading experience...</div>;
 }
 
 function AppRoutes() {
@@ -48,11 +50,13 @@ function AppRoutes() {
   return (
     <>
       {showShell && <Navbar />}
+      <BackButton className="global-back-button" />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth/role-selection" element={<RoleSelectionPage />} />
           <Route path="/auth/login/:role" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/student/dashboard" element={<ProtectedRoute requiredRole="student"><StudentDashboard /></ProtectedRoute>} />
           <Route path="/student/exam-schedule" element={<ProtectedRoute requiredRole="student"><StudentExamSchedulePage /></ProtectedRoute>} />
           <Route path="/student/hall-ticket" element={<ProtectedRoute requiredRole="student"><StudentHallTicketPage /></ProtectedRoute>} />

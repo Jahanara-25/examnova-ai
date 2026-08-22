@@ -71,7 +71,14 @@ input {
   gap: 0.65rem;
 }
 
-.brand-logo { width: 2.85rem; height: 2.85rem; flex: 0 0 auto; object-fit: cover; object-position: left; filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.3)); transition: transform 0.3s ease, filter 0.3s ease; }
+.app-loading, .portal-layout { background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 32%), radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.14), transparent 30%), #0f172a; }
+.theme-toggle, .portal-back-button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.5rem; border: 1px solid rgba(96, 165, 250, .3); border-radius: .75rem; padding: .6rem .75rem; color: var(--accent-cyan); background: rgba(15, 23, 42, .38); cursor: pointer; transition: .2s ease; }
+.theme-toggle:hover, .portal-back-button:hover { border-color: var(--accent-cyan); background: rgba(6, 182, 212, .12); transform: translateY(-1px); }
+.global-back-button { position: fixed; z-index: 40; right: 1rem; bottom: 1rem; box-shadow: var(--shadow-sm); backdrop-filter: blur(12px); }
+.theme-toggle:focus-visible, .portal-back-button:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(6, 182, 212, .5); outline-offset: 3px; }
+.sidebar-logo { display: block; width: 100%; height: 3.25rem; object-fit: contain; object-position: left center; }
+
+.brand-logo { width: clamp(10rem, 24vw, 14rem); height: auto; flex: 0 1 auto; object-fit: contain; filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.3)); transition: transform 0.3s ease, filter 0.3s ease; }
 .brand-block:hover .brand-logo { filter: drop-shadow(0 0 16px rgba(124, 58, 237, 0.5)); transform: rotate(-5deg) scale(1.05); }
 .brand-copy { display: flex; flex-direction: column; gap: 0.12rem; }
 
@@ -441,4 +448,36 @@ h2 {
   .info-card {
     padding: 1.2rem;
   }
+
+  .nav-actions { width: 100%; justify-content: space-between; }
+  .nav-shell { width: min(100% - 1.5rem, 1120px); }
+  .brand-logo { width: min(13rem, 68vw); }
+  .portal-layout { padding: .75rem; }
+  .portal-layout .flex-1 { min-width: 0; }
+  .portal-layout table { min-width: 38rem; }
 }
+
+/* Theme bridge for the existing Tailwind utility-based portal. It keeps the
+   current dark visual language while providing contrast-safe light surfaces. */
+:root.light body, :root.light .page-shell { background: linear-gradient(135deg, #f8fafc 0%, #eaf2ff 100%); color: #0f172a; }
+:root.light .navbar { background: rgba(255,255,255,.86); border-color: rgba(37,99,235,.18); }
+:root.light .footer, :root.light .muted-section { background: rgba(226,232,240,.62); }
+:root.light .hero { background: radial-gradient(circle at 78% 24%, rgba(6,182,212,.12), transparent 23%), radial-gradient(circle at 18% 5%, rgba(124,58,237,.12), transparent 28%), #f8fafc; }
+:root.light .hero-card, :root.light .info-card, :root.light .auth-card, :root.light .dashboard-card, :root.light .contact-box, :root.light .faq-item, :root.light .demo-card { background: rgba(255,255,255,.82); border-color: rgba(37,99,235,.2); }
+:root.light .app-loading, :root.light .portal-layout { background: radial-gradient(circle at top left, rgba(37,99,235,.12), transparent 32%), radial-gradient(circle at bottom right, rgba(124,58,237,.1), transparent 30%), #f8fafc; }
+:root.light .theme-toggle, :root.light .portal-back-button { background: rgba(255,255,255,.85); }
+
+:root.light [class*="bg-slate-9"], :root.light [class*="bg-slate-8"], :root.light [class*="bg-slate-950"] { background-color: rgba(255,255,255,.86) !important; }
+:root.light [class*="from-slate-9"], :root.light [class*="to-slate-9"], :root.light [class*="from-slate-8"], :root.light [class*="to-slate-8"] { --tw-gradient-from: rgba(255,255,255,.94) var(--tw-gradient-from-position) !important; --tw-gradient-to: rgba(241,245,249,.78) var(--tw-gradient-to-position) !important; }
+:root.light [class*="bg-slate-50"], :root.light [class*="bg-white"] { background-color: #f8fafc; }
+:root.light [class*="text-slate-1"], :root.light [class*="text-slate-2"], :root.light [class*="text-slate-3"] { color: #1e293b !important; }
+:root.light [class*="text-slate-4"], :root.light [class*="text-slate-5"], :root.light [class*="text-slate-6"] { color: #475569 !important; }
+:root.light [class*="text-slate-7"], :root.light [class*="text-slate-8"], :root.light [class*="text-slate-9"] { color: #0f172a !important; }
+
+:root.dark [class*="bg-slate-50"], :root.dark [class*="bg-white"] { background-color: rgba(15,23,42,.58) !important; }
+:root.dark [class*="border-slate-200"] { border-color: rgba(96,165,250,.22) !important; }
+:root.dark [class*="text-slate-9"] { color: #f1f5f9 !important; }
+:root.dark [class*="text-slate-7"] { color: #cbd5e1 !important; }
+:root.dark [class*="text-slate-6"] { color: #cbd5e1 !important; }
+:root.dark [class*="text-slate-5"], :root.dark [class*="text-slate-4"] { color: #94a3b8 !important; }
+:root.dark input, :root.dark select, :root.dark textarea { color: #e2e8f0; background-color: rgba(15,23,42,.72); border-color: rgba(96,165,250,.24); }
