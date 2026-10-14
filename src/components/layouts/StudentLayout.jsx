@@ -13,7 +13,6 @@ const routeMap = {
   '/student/analytics': [{ label: 'Student' }, { label: 'Performance Analytics' }],
   '/student/certificates': [{ label: 'Student' }, { label: 'Certificates' }],
   '/student/notifications': [{ label: 'Student' }, { label: 'Notifications' }],
-  '/student/ai-chatbot': [{ label: 'Student' }, { label: 'AI Chatbot' }],
   '/student/profile': [{ label: 'Student' }, { label: 'Profile' }],
   '/student/settings': [{ label: 'Student' }, { label: 'Settings' }],
 };

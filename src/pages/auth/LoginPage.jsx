@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import logo from '../../assets/logo.svg';
 
@@ -12,11 +12,11 @@ const roleLabels = {
 export default function LoginPage() {
   const { role } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const { login, isAuthenticated, user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -43,16 +43,19 @@ export default function LoginPage() {
         <img className="auth-logo" src={logo} alt="ExamNova AI" />
         <p className="eyebrow">{roleLabel} login</p>
         <h1>Welcome back</h1>
-        {location.state?.message && <p className="mt-3 text-sm font-semibold text-emerald-400" role="status">{location.state.message}</p>}
         <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             Email
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input name="email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
-          <label>
+          <label className="relative block">
             Password
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required className="pr-12" />
+            <button type="button" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} className="absolute right-3 top-[2.1rem] rounded p-1 text-slate-500 hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/>{showPassword && <path strokeLinecap="round" d="m4 4 16 16"/>}</svg>
+            </button>
           </label>
+          {['student', 'teacher'].includes(role) && <p className="-mt-2 text-right text-sm"><Link to={`/auth/forgot-password/${role}`} className="font-semibold text-cyan-400">Forgot Password?</Link></p>}
           {error && <p className="error-message">{error}</p>}
           <button className="button button-primary" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Signing in...' : 'Sign In'}

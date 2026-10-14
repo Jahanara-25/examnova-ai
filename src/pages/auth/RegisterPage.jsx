@@ -12,6 +12,8 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', rollNumber: '', department: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   const handleSubmit = async (event) => {
@@ -28,7 +30,7 @@ export default function RegisterPage() {
       const response = await fetch(`${apiBaseUrl}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) return setError(response.status >= 500 ? 'Authentication server error. Please try again.' : data.message || 'Registration failed.');
-      navigate(`/auth/login/${role}`, { replace: true, state: { message: 'Registration successful! Please sign in.' } });
+      navigate(`/auth/login/${role}`, { replace: true });
     } catch {
       setError('Unable to reach the authentication service. Please try again.');
     } finally {
@@ -44,8 +46,8 @@ export default function RegisterPage() {
       <label>Name<input name="name" value={form.name} onChange={update} autoComplete="name" /></label>
       <label>Email<input name="email" type="email" value={form.email} onChange={update} autoComplete="email" /></label>
       {role === 'student' && <><label>Roll Number<input name="rollNumber" value={form.rollNumber} onChange={update} autoComplete="off" /></label><label>Department<input name="department" value={form.department} onChange={update} autoComplete="organization" /></label></>}
-      <label>Password<input name="password" type="password" value={form.password} onChange={update} autoComplete="new-password" /></label>
-      <label>Confirm Password<input name="confirmPassword" type="password" value={form.confirmPassword} onChange={update} autoComplete="new-password" /></label>
+      <label className="relative block">Password<input name="password" type={showPassword ? 'text' : 'password'} value={form.password} onChange={update} autoComplete="new-password" className="pr-12" /><button type="button" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} className="absolute right-3 top-[2.1rem] rounded p-1 text-slate-500 hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/>{showPassword && <path strokeLinecap="round" d="m4 4 16 16"/>}</svg></button></label>
+      <label className="relative block">Confirm Password<input name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} value={form.confirmPassword} onChange={update} autoComplete="new-password" className="pr-12" /><button type="button" onClick={() => setShowConfirmPassword((visible) => !visible)} aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'} aria-pressed={showConfirmPassword} className="absolute right-3 top-[2.1rem] rounded p-1 text-slate-500 hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/>{showConfirmPassword && <path strokeLinecap="round" d="m4 4 16 16"/>}</svg></button></label>
       {error && <p className="error-message" role="alert">{error}</p>}
       <button className="button button-primary" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Creating account...' : 'Create Account'}</button>
     </form>
