@@ -18,7 +18,7 @@ const teacherGroups = [
   { label: 'Dashboard', items: [{ to: '/teacher/dashboard', label: 'Dashboard', icon: FaChartPie }] },
   { label: 'Question tools', items: [
     { to: '/teacher/question-bank', label: 'Question Bank', icon: FaBookOpen },
-    { to: '/teacher/question-paper-generator', label: 'AI Question Paper Generator', icon: FaFileAlt },
+    { to: '/teacher/question-paper-generator', label: 'AI Assisted Question Generator', icon: FaFileAlt },
   ] },
   { label: 'Exams', items: [{ to: '/teacher/exam-management', label: 'Exam Management', icon: FaClipboardList }, { to: '/teacher/evaluation', label: 'Evaluation', icon: FaTasks }] },
   { label: 'People and reports', items: [

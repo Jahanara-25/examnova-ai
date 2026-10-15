@@ -208,7 +208,7 @@ export default function QuestionPaperGeneratorPage() {
     </ReusableCard>
 
     {selected && <div className="grid gap-6 lg:grid-cols-2">
-      <ReusableCard title="Method 1 · AI Question Paper Generator" subtitle="Text-based PDF extraction only. Scanned image PDFs need OCR, which is not configured.">
+      <ReusableCard title="Method 1 · AI Assisted Question Generator" subtitle="Text-based PDF extraction only. Scanned image PDFs need OCR, which is not configured.">
         <form onSubmit={uploadPdf} className="space-y-4"><FormField label="Question paper PDF (maximum 10 MB)"><input type="file" accept="application/pdf,.pdf" disabled={busy} onChange={(event) => { const file = event.target.files?.[0] || null; setPdf(file); setMessage(file && ((file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) || file.size > 10 * 1024 * 1024) ? 'Choose a valid PDF no larger than 10 MB.' : ''); }} className="block w-full text-sm text-slate-200" /></FormField><ReusableButton type="submit" disabled={!pdf || extracting || busy}>{extracting ? 'Extracting…' : 'Extract for Review'}</ReusableButton></form>
       </ReusableCard>
       <ReusableForm title={`${editingId || draftEditingIndex >= 0 ? 'Edit' : 'Method 2 · Add'} Question`} onSubmit={saveQuestion}>
